@@ -32,7 +32,7 @@ Created Location, WeatherInfo, and TrafficInfo classes.
 **Phase 2 — TrafficAnalyzer Logic (Completed)**  
 Implemented risk evaluation based on weather and congestion.
 
-**Phase 3 — FakeDataService (Upcoming)**  
+**Phase 3 — FakeDataService (Completed)**  
 Provide predefined weather and traffic data.
 
 **Phase 4 — Console Menu System (Upcoming)**  
@@ -80,4 +80,5 @@ Gradle support, datasets, UML diagrams, real API integration.
 
 
   
+
 
