@@ -56,4 +56,15 @@ public class FakeDataService {
 
     }
 
+    public List<Location> getLocations() {
+        return locations;
+    }
+    public WeatherInfo getWeatherInfo(Location location){
+        String name = location.getName();
+        return weatherMap.get(name);
+    }
+    public TrafficInfo getTrafficInfo(Location location){
+        String name = location.getName();
+        return trafficMap.get(name);
+    }
 }

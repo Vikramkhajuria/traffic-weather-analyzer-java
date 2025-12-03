@@ -1,27 +1,25 @@
+import java.util.List;
+
 public class App {
     public static void main(String[] args) {
 
-        Location location = new Location("Stockholm");
-//        System.out.println(location.getName());
+        FakeDataService service = new FakeDataService();
 
-        WeatherInfo weather1 = new WeatherInfo(0, "Snow");
-//        System.out.println(weather.getTemperature());
-//        System.out.println(weather.getCondition());
+        List<Location> locations = service.getLocations();
 
-        TrafficInfo trafficInfo1 = new TrafficInfo(9);
-//        System.out.println(trafficInfo.getCongestionLevel());
+        for (Location loc : locations) {
+            WeatherInfo weather = service.getWeatherInfo(loc);
+            TrafficInfo traffic = service.getTrafficInfo(loc);
 
-        WeatherInfo weather2 = new WeatherInfo(15, "clear");
-        TrafficInfo trafficInfo2 = new TrafficInfo(7);
+            String risk = TrafficAnalyzer.getRiskLevel(weather, traffic);
 
-        WeatherInfo weather3 = new WeatherInfo(20, "Sunny");
-        TrafficInfo trafficInfo3 = new TrafficInfo(3);
-
-
-        System.out.println(TrafficAnalyzer.getRiskLevel(weather1, trafficInfo1));
-        System.out.println(TrafficAnalyzer.getRiskLevel(weather2, trafficInfo2));
-        System.out.println(TrafficAnalyzer.getRiskLevel(weather3, trafficInfo3));
-
+            System.out.println("Location: " + loc.getName());
+            System.out.println("  Weather: " + weather.getCondition()
+                    + ", " + weather.getTemperature() + "°C");
+            System.out.println("  Congestion: " + traffic.getCongestionLevel());
+            System.out.println("  Risk: " + risk);
+            System.out.println();
+        }
 
 
     }
