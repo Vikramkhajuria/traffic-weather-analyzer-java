@@ -1,26 +1,68 @@
 import java.util.List;
+import java.util.Scanner;
 
 public class App {
     public static void main(String[] args) {
 
         FakeDataService service = new FakeDataService();
+        TrafficAnalyzer analyzer = new TrafficAnalyzer();
+        Scanner scanner = new Scanner(System.in);
 
         List<Location> locations = service.getLocations();
 
-        for (Location loc : locations) {
-            WeatherInfo weather = service.getWeatherInfo(loc);
-            TrafficInfo traffic = service.getTrafficInfo(loc);
+        boolean running = true;
 
-            String risk = TrafficAnalyzer.getRiskLevel(weather, traffic);
+        while (running) {
+            System.out.println("\n*** Traffic & Weather Bottleneck Analyzer ***");
+            System.out.println("Select a location:\n");
 
-            System.out.println("Location: " + loc.getName());
-            System.out.println("  Weather: " + weather.getCondition()
-                    + ", " + weather.getTemperature() + "°C");
-            System.out.println("  Congestion: " + traffic.getCongestionLevel());
-            System.out.println("  Risk: " + risk);
-            System.out.println();
+            // Print menu dynamically
+            for (int i = 0; i < locations.size(); i++) {
+                System.out.println((i + 1) + ". " + locations.get(i).getName());
+            }
+
+            System.out.println("0. Exit");
+            System.out.print("Enter your choice: ");
+
+            String input = scanner.nextLine();
+            int choice;
+
+            try {
+                choice = Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a number.\n");
+                continue;
+            }
+
+            if (choice == 0) {
+                System.out.println("Exiting program... Goodbye!");
+                running = false;
+                continue;
+            }
+
+            if (choice < 1 || choice > locations.size()) {
+                System.out.println("Invalid choice. Try again.\n");
+                continue;
+            }
+
+            // Valid selection
+            Location selected = locations.get(choice - 1);
+
+            WeatherInfo weather = service.getWeatherInfo(selected);
+            TrafficInfo traffic = service.getTrafficInfo(selected);
+
+            // Perform Risk Analysis
+            String risk = analyzer.getRiskLevel(weather, traffic);
+
+            // Output
+            System.out.println("\n=== Analysis Result ===");
+            System.out.println("Location: " + selected.getName());
+            System.out.println("Weather: " + weather.getTemperature() + "°C, " + weather.getCondition());
+            System.out.println("Traffic level: " + traffic.getCongestionLevel());
+            System.out.println("Bottleneck risk: " + risk);
+            System.out.println("========================\n");
         }
 
-
+        scanner.close();
     }
 }
