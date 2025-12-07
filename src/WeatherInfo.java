@@ -10,8 +10,11 @@ public class WeatherInfo {
     public int getTemperature() {
         return temperature;
     }
-    public String getCondition() {
-        return condition;
+    public String getCondition() {return condition;   }
+
+    @Override
+    public String toString() {
+        return temperature + "°C, " + condition;
     }
 
 }
