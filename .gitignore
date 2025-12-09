@@ -8,3 +8,7 @@ out/
 # OS
 .DS_Store
 Thumbs.db
+
+*.iml
+.idea/
+
