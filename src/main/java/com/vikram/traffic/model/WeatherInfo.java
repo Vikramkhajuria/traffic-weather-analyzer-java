@@ -5,7 +5,7 @@ public class WeatherInfo {
     private int temperature;
     private String condition;
 
-    WeatherInfo(int temperature, String condition) {
+    public WeatherInfo(int temperature, String condition) {
         this.temperature = temperature;
         this.condition = condition;
     }
