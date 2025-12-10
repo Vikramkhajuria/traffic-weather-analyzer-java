@@ -1,6 +1,8 @@
 package com.vikram.traffic.app;
 
+import com.vikram.traffic.data.DataService;
 import com.vikram.traffic.data.FakeDataService;
+import com.vikram.traffic.data.RandomDataService;
 import com.vikram.traffic.domain.RiskLevel;
 import com.vikram.traffic.domain.TrafficAnalyzer;
 import com.vikram.traffic.model.Location;
@@ -14,7 +16,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
 
-        FakeDataService service = new FakeDataService();
+        DataService service = new RandomDataService();
         TrafficAnalyzer analyzer = new TrafficAnalyzer();
         AllLocationAnalyzer allAnalyzer = new AllLocationAnalyzer(service, analyzer);
 

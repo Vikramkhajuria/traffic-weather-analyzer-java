@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FakeDataService {
+public class FakeDataService implements DataService {
 
     public List<Location> locations;
     public Map <String, WeatherInfo> weatherMap;
@@ -61,14 +61,16 @@ public class FakeDataService {
         trafficMap.put(goth.getName(), gothTraffic);
 
     }
-
+    @Override
     public List<Location> getLocations() {
         return locations;
     }
+    @Override
     public WeatherInfo getWeatherInfo(Location location){
         String name = location.getName();
         return weatherMap.get(name);
     }
+    @Override
     public TrafficInfo getTrafficInfo(Location location){
         String name = location.getName();
         return trafficMap.get(name);
