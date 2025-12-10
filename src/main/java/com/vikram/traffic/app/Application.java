@@ -1,6 +1,7 @@
 package com.vikram.traffic.app;
 
 import com.vikram.traffic.data.FakeDataService;
+import com.vikram.traffic.domain.RiskLevel;
 import com.vikram.traffic.domain.TrafficAnalyzer;
 import com.vikram.traffic.model.Location;
 import com.vikram.traffic.model.TrafficInfo;
@@ -60,7 +61,7 @@ public class Application {
             TrafficInfo traffic = service.getTrafficInfo(selected);
 
             // Perform Risk Analysis
-            String risk = analyzer.getRiskLevel(weather, traffic);
+            RiskLevel risk = analyzer.getRiskLevel(weather, traffic);
 
             // Output
             System.out.println("\n=== Analysis Result ===");
