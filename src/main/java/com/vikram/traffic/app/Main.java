@@ -6,6 +6,7 @@ import com.vikram.traffic.domain.TrafficAnalyzer;
 import com.vikram.traffic.model.Location;
 import com.vikram.traffic.model.TrafficInfo;
 import com.vikram.traffic.model.WeatherInfo;
+import com.vikram.traffic.domain.AllLocationAnalyzer;
 
 import java.util.List;
 import java.util.Scanner;
@@ -15,6 +16,7 @@ public class Main {
 
         FakeDataService service = new FakeDataService();
         TrafficAnalyzer analyzer = new TrafficAnalyzer();
+        AllLocationAnalyzer allAnalyzer = new AllLocationAnalyzer(service, analyzer);
 
         Scanner scanner = new Scanner(System.in);
 
@@ -30,17 +32,21 @@ public class Main {
             for (int i = 0; i < locations.size(); i++) {
                 System.out.println((i + 1) + ". " + locations.get(i).getName());
             }
-
+            System.out.println("A. Analyze all locations");
             System.out.println("0. Exit");
             System.out.print("Enter your choice: ");
 
             String input = scanner.nextLine();
             int choice;
+            if (input.equalsIgnoreCase("A")){
+                allAnalyzer.analyzeAll(locations);
+                continue;
+            }
 
             try {
                 choice = Integer.parseInt(input);
             } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a number.\n");
+                System.out.println("Invalid input. Please enter a number or an alphabet.\n");
                 continue;
             }
 
