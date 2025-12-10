@@ -1,3 +1,8 @@
+package com.vikram.traffic.domain;
+
+import com.vikram.traffic.model.TrafficInfo;
+import com.vikram.traffic.model.WeatherInfo;
+
 public class TrafficAnalyzer {
 
     public static String getRiskLevel(WeatherInfo Weather1, TrafficInfo trafficInfo1) {

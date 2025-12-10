@@ -1,3 +1,5 @@
+package com.vikram.traffic.model;
+
 public class TrafficInfo{
     private int congestionLevel;
 

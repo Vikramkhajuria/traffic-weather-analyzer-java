@@ -1,3 +1,9 @@
+package com.vikram.traffic.data;
+
+import com.vikram.traffic.model.Location;
+import com.vikram.traffic.model.TrafficInfo;
+import com.vikram.traffic.model.WeatherInfo;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -5,9 +11,9 @@ import java.util.Map;
 
 public class FakeDataService {
 
-    private List<Location> locations;
-    private Map <String, WeatherInfo> weatherMap;
-    private Map <String, TrafficInfo> trafficMap;
+    public List<Location> locations;
+    public Map <String, WeatherInfo> weatherMap;
+    public Map <String, TrafficInfo> trafficMap;
 
     public FakeDataService(){
         locations = new ArrayList<>();

@@ -1,7 +1,15 @@
+package com.vikram.traffic.app;
+
+import com.vikram.traffic.data.FakeDataService;
+import com.vikram.traffic.domain.TrafficAnalyzer;
+import com.vikram.traffic.model.Location;
+import com.vikram.traffic.model.TrafficInfo;
+import com.vikram.traffic.model.WeatherInfo;
+
 import java.util.List;
 import java.util.Scanner;
 
-public class App {
+public class Application {
     public static void main(String[] args) {
 
         FakeDataService service = new FakeDataService();
