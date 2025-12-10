@@ -7,7 +7,7 @@ import com.vikram.traffic.domain.RiskLevel;
 
 public class TrafficAnalyzer {
 
-    public static RiskLevel getRiskLevel(WeatherInfo Weather1, TrafficInfo trafficInfo1) {
+    public  RiskLevel getRiskLevel(WeatherInfo Weather1, TrafficInfo trafficInfo1) {
         String condition = Weather1.getCondition();
         int congestion = trafficInfo1.getCongestionLevel();
 

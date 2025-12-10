@@ -10,7 +10,7 @@ public class TrafficInfo{
         return congestionLevel;
     }
 
-    @Override
+
     public String toString(){
         return "Level " + congestionLevel;
     }

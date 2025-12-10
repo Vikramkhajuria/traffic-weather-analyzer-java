@@ -14,7 +14,7 @@ public class WeatherInfo {
     }
     public String getCondition() {return condition;   }
 
-    @Override
+
     public String toString() {
         return temperature + "°C, " + condition;
     }
