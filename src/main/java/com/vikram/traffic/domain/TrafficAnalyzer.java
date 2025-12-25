@@ -1,5 +1,6 @@
 package com.vikram.traffic.domain;
 
+import com.vikram.traffic.data.DataService;
 import com.vikram.traffic.model.TrafficInfo;
 import com.vikram.traffic.model.WeatherInfo;
 import com.vikram.traffic.domain.RiskLevel;

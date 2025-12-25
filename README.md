@@ -1,110 +1,33 @@
-# Traffic & Weather Bottleneck Analyzer  
-A Java console application that evaluates simplified weather and traffic conditions for multiple locations and determines a bottleneck risk level (LOW, MEDIUM, HIGH).
-Designed with clean OOP, domain-driven structure, and Gradle build support.
+# Traffic & Weather Bottleneck Analyzer – Class Guide
 
-  
-  ---
+This project is a small console app that scores traffic risk for multiple locations. Below is a quick map of every class and how they work together.
 
-### Overview  
-This project simulates a lightweight analysis system similar to real-world traffic infrastructure software.
-It uses:
+## Packages and Classes
 
-- Encapsulated domain models (Location, WeatherInfo, TrafficInfo)
+**app**
+- `src/main/java/com/vikram/traffic/app/Main.java` – Entry point. Builds a `DataService` (defaults to `RandomDataService`), a `TrafficAnalyzer`, and an `AllLocationAnalyzer`. Presents a CLI menu, fetches data for the chosen location (or all), and prints the risk result.
 
-- A reusable domain logic engine (TrafficAnalyzer)
+**domain**
+- `src/main/java/com/vikram/traffic/domain/TrafficAnalyzer.java` – Core rule engine. Returns `RiskLevel` based on congestion and weather (snow with high congestion escalates to HIGH; medium congestion yields MEDIUM; otherwise LOW).
+- `src/main/java/com/vikram/traffic/domain/AllLocationAnalyzer.java` – Batch runner. Loops over all provided `Location`s, pulls data from a `DataService`, calls `TrafficAnalyzer`, and prints a per-location summary.
+- `src/main/java/com/vikram/traffic/domain/RiskLevel.java` – Enum for LOW, MEDIUM, HIGH with a human-readable message via `getMessage()`.
 
-- An extendable data provider (FakeDataService)
+**data**
+- `src/main/java/com/vikram/traffic/data/DataService.java` – Interface defining the data contract: provide locations plus weather and traffic info for a given location.
+- `src/main/java/com/vikram/traffic/data/FakeDataService.java` – Deterministic, in-memory dataset using maps keyed by location name. Good for demos or predictable outputs.
+- `src/main/java/com/vikram/traffic/data/RandomDataService.java` – Generates random temperatures, conditions, and congestion levels on each request; includes a small fixed list of locations.
 
-- A CLI interface for user interaction
+**model**
+- `src/main/java/com/vikram/traffic/model/Location.java` – Simple value object holding a location name.
+- `src/main/java/com/vikram/traffic/model/WeatherInfo.java` – Weather reading with `temperature` and `condition`; provides getters and a display-friendly `toString()`.
+- `src/main/java/com/vikram/traffic/model/TrafficInfo.java` – Traffic reading with `congestionLevel`; includes getters and a `toString()` rendering the level.
 
-- Batch analysis support (A option) using a dedicated class (AllLocationAnalyzer)
+## How Data Flows
+1) `Main` gets all `Location`s from a `DataService`.  
+2) For each chosen location, it requests `WeatherInfo` and `TrafficInfo`.  
+3) `TrafficAnalyzer` evaluates those readings and returns a `RiskLevel`.  
+4) `Main` (or `AllLocationAnalyzer` for batch mode) prints the result to the console.
 
- -Gradle for building and running the application
-
----
-
-### Purpose  
-- Object-Oriented Programming at scale
-- Multi-class architecture
-- Separation of concerns (domain, data, UI layers) 
-- Clean code and logical decomposition
--  Working with Gradle build systems
--  Using Git & GitHub professionally
-  ---
-
-### Features 
-Core Functionality
-- Predefined locations  
-- Weather data (temperature + condition)  
-- Traffic data (congestion level)
-- Unified risk evaluation using RiskLevel enum
-- CLI menu for selecting locations
-- Analyze-all-locations mode (press A)
-
-Under the Hood
-- Domain-driven design
-- Batch analyzer class (AllLocationAnalyzer)
-- Extendable architechture (east to plug in real APIs later)
-- Compact and readable domain logic
-
-  ---
-
-### Development Phases  
-**Phase 1 — Data Model (Completed)**  
-Created Location, WeatherInfo, and TrafficInfo classes.
-
-**Phase 2 — TrafficAnalyzer Logic (Completed)**  
-Implemented risk evaluation based on weather and congestion.
-
-**Phase 3 — FakeDataService (Completed)**  
-Provide predefined weather and traffic data.
-
-**Phase 4 — Console Menu System (Completed)**  
-Interactive menu for user-selected locations.
-
-**Phase 5 — Enhancements (Under progress)**  
-Gradle support, datasets, UML diagrams, real API integration.
-
----
-
-### What I Learned  
-- Multi-class Java design  
-- Encapsulation and constructors  
-- Domain modeling (location, weather, traffic)  
-- Implementing logical decision rules  
-- Testing behavior before UI  
-- Using Git and GitHub professionally
-- Enum-based logic & risk scoring
-
----
-
-### Tech Used  
-- Java  
-- IntelliJ IDEA  
-- Git & GitHub  
-
----
-
-### Next Steps  
-- Implement FakeDataService  
-- Replace hardcoded test objects  
-- Build full console menu  
-- Add dataset support (CSV/JSON)  
-- Convert to Gradle  
-- Add UML diagrams  
-
----
-
-### Future Vision  
-- Real weather/traffic API integration  
-- More advanced risk scoring  
-- UI version (JavaFX or web)  
-- Automated tests  
-- Modular Gradle setup  
----
-
-
-  
-
-
-
+## Running the App
+- From the project root: `./gradlew run` (or `gradlew.bat run` on Windows).  
+- Choose a numbered location or press `A` to analyze all. Exit with `0`.

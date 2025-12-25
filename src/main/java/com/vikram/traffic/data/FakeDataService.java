@@ -11,9 +11,9 @@ import java.util.Map;
 
 public class FakeDataService implements DataService {
 
-    public List<Location> locations;
-    public Map <String, WeatherInfo> weatherMap;
-    public Map <String, TrafficInfo> trafficMap;
+    private List<Location> locations;
+    private Map <String, WeatherInfo> weatherMap;
+    private  Map <String, TrafficInfo> trafficMap;
 
     public FakeDataService(){
         locations = new ArrayList<>();
