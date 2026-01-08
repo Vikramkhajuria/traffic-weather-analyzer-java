@@ -1,33 +1,169 @@
 # Traffic & Weather Bottleneck Analyzer – Class Guide
 
-This project is a small console app that scores traffic risk for multiple locations. Below is a quick map of every class and how they work together.
+Java project that started as a console-based risk analyzer and has been incrementally evolved into a Spring Boot REST API.
+
+The goal of this project is not to build a complex system, but to learn how real software systems are structured: clean domain logic, separation of concerns, and exposing functionality through a backend API.
+
+Project Evolution
+
+Phase 0 – Console Application (OOP Foundations)
+
+Menu-driven CLI
+
+Multiple locations
+
+Weather + traffic simulation
+
+Risk classification logic
+
+Interfaces and polymorphism
+
+Phase 1 - Backend API (Current)
+
+Existing domain logic wrapped with Spring Boot
+
+REST endpoint exposing risk calculation as JSON
+
+Embedded Tomcat running on port 8080
+
+Java 17 + Gradle (industry-aligned setup)
+
+Future versions will add proper dependency injection, configuration-based data sources, and a frontend dashboard.
+
+
+Architecture Overview
+
+The project is intentionally split into clear layers:
+
+app      → CLI entry point (legacy, still kept)
+domain   → Core business logic (risk calculation)
+data     → Data providers (fake / random)
+model    → Pure data objects
+web      → Spring Boot REST API (OH DAMN)
+
+
 
 ## Packages and Classes
 
-**app**
-- `src/main/java/com/vikram/traffic/app/Main.java` – Entry point. Builds a `DataService` (defaults to `RandomDataService`), a `TrafficAnalyzer`, and an `AllLocationAnalyzer`. Presents a CLI menu, fetches data for the chosen location (or all), and prints the risk result.
+app
 
-**domain**
-- `src/main/java/com/vikram/traffic/domain/TrafficAnalyzer.java` – Core rule engine. Returns `RiskLevel` based on congestion and weather (snow with high congestion escalates to HIGH; medium congestion yields MEDIUM; otherwise LOW).
-- `src/main/java/com/vikram/traffic/domain/AllLocationAnalyzer.java` – Batch runner. Loops over all provided `Location`s, pulls data from a `DataService`, calls `TrafficAnalyzer`, and prints a per-location summary.
-- `src/main/java/com/vikram/traffic/domain/RiskLevel.java` – Enum for LOW, MEDIUM, HIGH with a human-readable message via `getMessage()`.
+Main.java
+Original CLI entry point. Builds a DataService, TrafficAnalyzer, and AllLocationAnalyzer, presents a menu, and prints results to the console.
+This remains for local testing and learning.
 
-**data**
-- `src/main/java/com/vikram/traffic/data/DataService.java` – Interface defining the data contract: provide locations plus weather and traffic info for a given location.
-- `src/main/java/com/vikram/traffic/data/FakeDataService.java` – Deterministic, in-memory dataset using maps keyed by location name. Good for demos or predictable outputs.
-- `src/main/java/com/vikram/traffic/data/RandomDataService.java` – Generates random temperatures, conditions, and congestion levels on each request; includes a small fixed list of locations.
+domain
 
-**model**
-- `src/main/java/com/vikram/traffic/model/Location.java` – Simple value object holding a location name.
-- `src/main/java/com/vikram/traffic/model/WeatherInfo.java` – Weather reading with `temperature` and `condition`; provides getters and a display-friendly `toString()`.
-- `src/main/java/com/vikram/traffic/model/TrafficInfo.java` – Traffic reading with `congestionLevel`; includes getters and a `toString()` rendering the level.
+TrafficAnalyzer.java
+Core rule engine. Determines RiskLevel based on weather and congestion:
+
+High congestion + snow → HIGH
+
+Medium congestion → MEDIUM
+
+Otherwise → LOW
+
+AllLocationAnalyzer.java
+Batch runner. Iterates over all locations, fetches data via DataService, evaluates risk using TrafficAnalyzer, and produces per-location summaries.
+
+RiskLevel.java
+Enum representing LOW, MEDIUM, and HIGH.
+data
+
+DataService.java
+Interface defining the data contract:
+
+available locations
+
+weather for a location
+
+traffic for a location
+
+FakeDataService.java
+Deterministic, in-memory data. Useful for demos and predictable output.
+
+RandomDataService.java
+Generates random weather and congestion values on each request.
+model
+
+Location.java
+Value object representing a location.
+
+WeatherInfo.java
+Temperature and condition (e.g. Snow, Cloudy).
+
+TrafficInfo.java
+Traffic congestion level.
+
+## Web 
+
+TrafficWeatherAnalyzerApplication.java
+Spring Boot application entry point.
+
+RiskController.java
+REST controller exposing the domain logic via HTTP.
+
+RiskResponse.java
+DTO returned as JSON to clients.
 
 ## How Data Flows
-1) `Main` gets all `Location`s from a `DataService`.  
-2) For each chosen location, it requests `WeatherInfo` and `TrafficInfo`.  
-3) `TrafficAnalyzer` evaluates those readings and returns a `RiskLevel`.  
-4) `Main` (or `AllLocationAnalyzer` for batch mode) prints the result to the console.
+Console (legacy)
 
-## Running the App
-- From the project root: `./gradlew run` (or `gradlew.bat run` on Windows).  
-- Choose a numbered location or press `A` to analyze all. Exit with `0`.
+CLI selects a location
+
+DataService provides weather + traffic
+
+TrafficAnalyzer evaluates risk
+
+Result printed to console
+
+REST API (current)
+
+HTTP request hits /api/risk
+
+Controller delegates to existing domain logic
+
+Risk result returned as JSON
+
+The same domain logic is used in both cases.
+
+## Why This Project Exists
+
+This project is primarily a learning exercise focused on:
+
+Object-Oriented Design
+
+Separation of concerns
+
+Interfaces and polymorphism
+
+Transitioning from a console app to a backend service
+
+Understanding how domain logic can be reused across different entry points
+
+The code is intentionally simple and incremental to ensure the fundamentals are understood before adding complexity.
+
+## Next Steps (Planned)
+
+Introduce Spring Dependency Injection (@Service, @Configuration)
+
+Switch data source via configuration instead of code
+
+Add /api/locations endpoint
+
+Improve error handling (HTTP status codes)
+
+Frontend dashboard
+
+Cloud deployment (Azure)
+
+## Tech Stack
+
+Java 17
+
+Gradle
+
+Spring Boot
+
+REST / JSON
+
+Git & GitHub
