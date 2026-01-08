@@ -20,12 +20,18 @@ public class Main {
         AllLocationAnalyzer allAnalyzer = new AllLocationAnalyzer(dataService, analyzer);
         List<Location> locations = dataService.getLocations();
 
+
         Scanner scanner = new Scanner(System.in);
 
         boolean running = true;
 
         while (running) {
-            System.out.println("\n*** Traffic & Weather Bottleneck Analyzer ***");
+            String mode = (dataService instanceof FakeDataService) ? "FAKE" : "RANDOM";
+
+
+            System.out.println("-------------------------------------------------");
+            System.out.println("*** Traffic & Weather Bottleneck Analyzer ***");
+            System.out.println("Mode: " + mode);
             System.out.println("Select a location:\n");
 
             // Print menu dynamically
@@ -35,7 +41,8 @@ public class Main {
             System.out.println("A. Analyze all locations");
             System.out.println("D. Switch data mode (Fake/Random)");
             System.out.println("0. Exit");
-            System.out.print("Enter your choice: ");
+            System.out.println("Enter choice (1-" + locations.size() + ", A, D, 0): ");
+            System.out.println("-------------------------------------------------");
 
             String input = scanner.nextLine();
             int choice;
@@ -87,10 +94,10 @@ public class Main {
 
                 // Output
                 System.out.println("\n=== Analysis Result ===");
-                System.out.println("Location: " + selected.getName());
-                System.out.println("Weather: " + weather.getTemperature() + "°C, " + weather.getCondition());
-                System.out.println("Traffic level: " + traffic.getCongestionLevel());
-                System.out.println("Risk: " + risk.getMessage());
+                System.out.println("Location  : " + selected.getName());
+                System.out.println("Weather   : " + weather.getTemperature() + "°C, " + weather.getCondition());
+                System.out.println("Traffic   : " + traffic.getCongestionLevel());
+                System.out.println("Risk      : " + risk.getMessage());
                 System.out.println("========================\n");
             }
 

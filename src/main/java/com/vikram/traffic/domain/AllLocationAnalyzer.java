@@ -19,20 +19,23 @@ public class AllLocationAnalyzer {
 
     public void analyzeAll(List<Location> locations) {
 
+        System.out.println("\n=== All Locations ===");
+
         for (Location location : locations) {
             WeatherInfo weather = service.getWeatherInfo(location);
             TrafficInfo traffic = service.getTrafficInfo(location);
             RiskLevel risk = analyzer.getRiskLevel(weather, traffic);
 
-            System.out.println(
-                    location.getName() +
-                            " -> " + risk +
-                            " (" + weather.getTemperature() + "°C, " +
-                            weather.getCondition() + ", traffic " +
-                            traffic.getCongestionLevel() + ")"
+            System.out.printf(
+                    "%-20s | Weather: %3d°C %-7s | Traffic: %2d/10 | Risk: %-6s%n",
+                    location.getName(),
+                    weather.getTemperature(),
+                    weather.getCondition(),
+                    traffic.getCongestionLevel(),
+                    risk
             );
-
-
         }
+
+        System.out.println("=====================\n");
     }
 }
