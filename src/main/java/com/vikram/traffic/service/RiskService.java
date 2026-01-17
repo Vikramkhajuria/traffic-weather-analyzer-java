@@ -33,13 +33,18 @@ public class RiskService {
 
         WeatherInfo weather = dataService.getWeatherInfo(location);
         TrafficInfo traffic = dataService.getTrafficInfo(location);
+        var evaluation = trafficAnalyzer.evaluate(weather, traffic);
 
         return new RiskResult(
                 location.getName(),
                 weather.getTemperature(),
                 weather.getCondition(),
                 traffic.getCongestionLevel(),
-                trafficAnalyzer.getRiskLevel(weather, traffic).toString()
+                trafficAnalyzer.getRiskLevel(weather, traffic).toString(),
+                evaluation.level().toString(),
+                evaluation.score(),
+                evaluation.reasons()
+
         );
     }
 }
