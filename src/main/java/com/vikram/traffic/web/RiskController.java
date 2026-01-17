@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class RiskController {
 
-    // OH-DAMN v0: keep it dead simple (no dependency injection yet)
+
     private final DataService dataService = new FakeDataService();
     private final TrafficAnalyzer analyzer = new TrafficAnalyzer();
 
@@ -28,7 +28,7 @@ public class RiskController {
         WeatherInfo weather = dataService.getWeatherInfo(loc);
         TrafficInfo traffic = dataService.getTrafficInfo(loc);
 
-        // If your method name differs, you'll get a compile error—then paste it to me.
+
         String riskLevel = analyzer.getRiskLevel(weather, traffic).toString();
 
 
