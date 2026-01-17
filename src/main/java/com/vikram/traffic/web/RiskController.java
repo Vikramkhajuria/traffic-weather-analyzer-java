@@ -1,44 +1,34 @@
 package com.vikram.traffic.web;
 
-import com.vikram.traffic.data.DataService;
-import com.vikram.traffic.data.FakeDataService;
-import com.vikram.traffic.domain.RiskLevel;
-import com.vikram.traffic.domain.TrafficAnalyzer;
 import com.vikram.traffic.model.Location;
-import com.vikram.traffic.model.TrafficInfo;
-import com.vikram.traffic.model.WeatherInfo;
+import com.vikram.traffic.service.RiskResult;
+import com.vikram.traffic.service.RiskService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
+@RequestMapping("/api/v1")
 public class RiskController {
 
 
-    private final DataService dataService = new FakeDataService();
-    private final TrafficAnalyzer analyzer = new TrafficAnalyzer();
+    private final RiskService riskService;
 
-    @GetMapping("/api/risk")
-    public RiskResponse risk(@RequestParam String location) {
-        Location loc = dataService.getLocations().stream()
-                .filter(l -> l.getName().equalsIgnoreCase(location))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Unknown location: " + location));
+    public RiskController (RiskService riskService){
+        this. riskService = riskService;
+    }
 
-        WeatherInfo weather = dataService.getWeatherInfo(loc);
-        TrafficInfo traffic = dataService.getTrafficInfo(loc);
+    @GetMapping("/analysis")
+    public RiskResult analysis(@RequestParam String location) {
+        return riskService.calculateRisk(location);
+    }
 
-
-        String riskLevel = analyzer.getRiskLevel(weather, traffic).toString();
-
-
-        return new RiskResponse(
-                loc.getName(),
-                weather.getTemperature(),
-                weather.getCondition(),
-                traffic.getCongestionLevel(),
-                riskLevel
-        );
+    @GetMapping("/locations")
+    public List<Location> locations() {
+        return riskService.getLocations();
     }
 }
 

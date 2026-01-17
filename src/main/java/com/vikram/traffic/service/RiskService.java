@@ -5,6 +5,7 @@ import com.vikram.traffic.domain.TrafficAnalyzer;
 import com.vikram.traffic.model.Location;
 import com.vikram.traffic.model.TrafficInfo;
 import com.vikram.traffic.model.WeatherInfo;
+import com.vikram.traffic.web.LocationNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public class RiskService {
         Location location = dataService.getLocations().stream()
                 .filter(l -> l.getName().equalsIgnoreCase(locationName))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Unknown location: " + locationName));
+                .orElseThrow(() -> new LocationNotFoundException(locationName));
 
         WeatherInfo weather = dataService.getWeatherInfo(location);
         TrafficInfo traffic = dataService.getTrafficInfo(location);
