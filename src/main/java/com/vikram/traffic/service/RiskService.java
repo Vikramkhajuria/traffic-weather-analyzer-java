@@ -40,12 +40,11 @@ public class RiskService {
                 weather.getTemperature(),
                 weather.getCondition(),
                 traffic.getCongestionLevel(),
-                trafficAnalyzer.getRiskLevel(weather, traffic).toString(),
                 evaluation.level().toString(),
                 evaluation.score(),
                 evaluation.reasons()
-
         );
+
     }
 }
 

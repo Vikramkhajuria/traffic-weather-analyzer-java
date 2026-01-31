@@ -37,3 +37,4 @@ public class RiskResult {
     public int getScore() { return score; }
     public List<String> getReasons() { return reasons; }
 }
+
