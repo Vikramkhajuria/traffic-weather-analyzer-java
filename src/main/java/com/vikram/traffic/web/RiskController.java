@@ -3,10 +3,7 @@ package com.vikram.traffic.web;
 import com.vikram.traffic.model.Location;
 import com.vikram.traffic.service.RiskResult;
 import com.vikram.traffic.service.RiskService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,8 +18,8 @@ public class RiskController {
         this. riskService = riskService;
     }
 
-    @GetMapping("/analysis")
-    public RiskResult analysis(@RequestParam String location) {
+    @GetMapping("/risk/{location}")
+    public RiskResult risk(@PathVariable String location) {
         return riskService.calculateRisk(location);
     }
 
