@@ -1,169 +1,103 @@
-# Traffic & Weather Bottleneck Analyzer – Class Guide
-
-Java project that started as a console-based risk analyzer and has been incrementally evolved into a Spring Boot REST API.
-
-The goal of this project is not to build a complex system, but to learn how real software systems are structured: clean domain logic, separation of concerns, and exposing functionality through a backend API.
-
-Project Evolution
-
-Phase 0 – Console Application (OOP Foundations)
-
-Menu-driven CLI
-
-Multiple locations
-
-Weather + traffic simulation
-
-Risk classification logic
-
-Interfaces and polymorphism
-
-Phase 1 - Backend API (Current)
-
-Existing domain logic wrapped with Spring Boot
-
-REST endpoint exposing risk calculation as JSON
-
-Embedded Tomcat running on port 8080
-
-Java 17 + Gradle (industry-aligned setup)
-
-Future versions will add proper dependency injection, configuration-based data sources, and a frontend dashboard.
-
-
-Architecture Overview
-
-The project is intentionally split into clear layers:
-
-app      → CLI entry point (legacy, still kept)
-domain   → Core business logic (risk calculation)
-data     → Data providers (fake / random)
-model    → Pure data objects
-web      → Spring Boot REST API (OH DAMN)
-
-
-
-## Packages and Classes
-
-app
-
-Main.java
-Original CLI entry point. Builds a DataService, TrafficAnalyzer, and AllLocationAnalyzer, presents a menu, and prints results to the console.
-This remains for local testing and learning.
-
-domain
-
-TrafficAnalyzer.java
-Core rule engine. Determines RiskLevel based on weather and congestion:
-
-High congestion + snow → HIGH
-
-Medium congestion → MEDIUM
-
-Otherwise → LOW
-
-AllLocationAnalyzer.java
-Batch runner. Iterates over all locations, fetches data via DataService, evaluates risk using TrafficAnalyzer, and produces per-location summaries.
-
-RiskLevel.java
-Enum representing LOW, MEDIUM, and HIGH.
-data
-
-DataService.java
-Interface defining the data contract:
-
-available locations
-
-weather for a location
-
-traffic for a location
-
-FakeDataService.java
-Deterministic, in-memory data. Useful for demos and predictable output.
-
-RandomDataService.java
-Generates random weather and congestion values on each request.
-model
-
-Location.java
-Value object representing a location.
-
-WeatherInfo.java
-Temperature and condition (e.g. Snow, Cloudy).
-
-TrafficInfo.java
-Traffic congestion level.
-
-## Web 
-
-TrafficWeatherAnalyzerApplication.java
-Spring Boot application entry point.
-
-RiskController.java
-REST controller exposing the domain logic via HTTP.
-
-RiskResponse.java
-DTO returned as JSON to clients.
-
-## How Data Flows
-Console (legacy)
-
-CLI selects a location
-
-DataService provides weather + traffic
-
-TrafficAnalyzer evaluates risk
-
-Result printed to console
-
-REST API (current)
-
-HTTP request hits /api/risk
-
-Controller delegates to existing domain logic
-
-Risk result returned as JSON
-
-The same domain logic is used in both cases.
-
-## Why This Project Exists
-
-This project is primarily a learning exercise focused on:
-
-Object-Oriented Design
-
-Separation of concerns
-
-Interfaces and polymorphism
-
-Transitioning from a console app to a backend service
-
-Understanding how domain logic can be reused across different entry points
-
-The code is intentionally simple and incremental to ensure the fundamentals are understood before adding complexity.
-
-## Next Steps (Planned)
-
-Introduce Spring Dependency Injection (@Service, @Configuration)
-
-Switch data source via configuration instead of code
-
-Add /api/locations endpoint
-
-Improve error handling (HTTP status codes)
-
-Frontend dashboard
-
-Cloud deployment (Azure)
-
-## Tech Stack
-
-Java 17
-
-Gradle
-
-Spring Boot
-
-REST / JSON
-
-Git & GitHub
+**Traffic & Weather Bottleneck Analyzer (Backend)**
+
+A containerized Spring Boot backend that analyzes traffic congestion risk based on location data, weather conditions, and traffic signals.
+Built to practice real-world backend engineering workflows, not just coursework.
+
+**What this project is
+**
+
+This project simulates how a backend service:
+- exposes REST APIs
+- persists domain data in a relational database
+- applies business logic to compute risk levels
+- runs consistently across environments using Docker
+The goal was to move beyond “works on my machine” and build something that resembles how production backends are actually developed and run.
+
+**Core Concepts Practiced**
+
+- REST API design with Spring Boot
+- Layered backend architecture (Controller → Service → Repository)
+- JPA / Hibernate with PostgreSQL
+- Domain-driven risk evaluation logic
+- Database schema management
+- Environment-agnostic execution using Docker & Docker Compose
+
+**Architecture Overview**
+
+Client (Browser / API tool)
+        ↓
+Spring Boot REST API
+        ↓
+Service Layer (Risk Evaluation)
+        ↓
+JPA / Hibernate
+        ↓
+PostgreSQL Database
+
+All services run inside Docker containers, ensuring consistent behavior across machines.
+
+
+**Tech Stack**
+
+**Backend**
+- Java 17
+- Spring Boot 3
+- Spring Web
+- Spring Data JPA
+- Hibernate
+
+**Database**
+- PostgreSQL
+
+**Infrastructure**
+- Docker
+- Docker Compose
+- Gradle
+
+**Features Implemented**
+- Persisted Location entities stored in PostgreSQL
+- Automatic database schema creation via Hibernate
+- Risk calculation based on:
+    - Traffic congestion level
+    - Weather conditions
+- REST endpoints for:
+    - Risk analysis by location
+    - Location lookup
+- Application runs fully containerized (API + DB)
+
+
+**Why Docker is used here**
+
+Docker ensures:
+- consistent Java version (Java 17)
+- consistent database setup
+- no local environment dependency issues
+- easy onboarding for anyone cloning the repo
+This mirrors how backend services are typically run in professional environments.
+
+**What I learned**
+
+- How backend services actually connect to databases in real setups
+- Why environment mismatches cause production bugs
+- How Docker removes “machine-specific” problems
+- How to debug backend + database issues across containers
+- How JPA behaves during schema generation and startup
+
+**Next Improvements (planned)**
+
+- Seed database via startup scripts
+- Replace mock data with fully DB-driven flows
+- Add request validation & error handling
+- Introduce API documentation via OpenAPI
+- Add basic tests for service layer
+- Prepare for cloud deployment
+
+**Author**
+
+BSc Software Development (started Sep 2025)
+Focused on backend engineering, systems thinking, and real-world development practices.
+
+**Final note**
+
+This project is intentionally backend-focused.
+No UI, no distractions — just core engineering fundamentals done properly.
