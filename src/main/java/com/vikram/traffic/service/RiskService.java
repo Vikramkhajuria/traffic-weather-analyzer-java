@@ -8,21 +8,29 @@ import com.vikram.traffic.model.WeatherInfo;
 import com.vikram.traffic.web.LocationNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.vikram.traffic.data.LocationRepository;
+import com.vikram.traffic.data.LocationEntity;
+
 import java.util.List;
 
 @Service
 public class RiskService {
 
+    private final LocationRepository locationRepository;
     private final DataService dataService;
     private final TrafficAnalyzer trafficAnalyzer;
 
-    public RiskService(DataService dataService, TrafficAnalyzer trafficAnalyzer) {
+    public RiskService(DataService dataService, TrafficAnalyzer trafficAnalyzer, LocationRepository locationRepository) {
         this.dataService = dataService;
         this.trafficAnalyzer = trafficAnalyzer;
+        this.locationRepository = locationRepository;
     }
 
+
     public List<Location> getLocations() {
-        return dataService.getLocations();
+        return locationRepository.findAll().stream()
+                .map(e -> new Location(e.getName()))
+                .toList();
     }
 
     public RiskResult calculateRisk(String locationName) {
