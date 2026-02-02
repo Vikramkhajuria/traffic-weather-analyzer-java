@@ -3,8 +3,7 @@
 A containerized Spring Boot backend that analyzes traffic congestion risk based on location data, weather conditions, and traffic signals.
 Built to practice real-world backend engineering workflows, not just coursework.
 
-**What this project is
-**
+**What this project is**
 
 This project simulates how a backend service:
 - exposes REST APIs
