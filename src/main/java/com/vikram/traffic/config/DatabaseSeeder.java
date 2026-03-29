@@ -1,7 +1,7 @@
 package com.vikram.traffic.config;
 
-import com.vikram.traffic.data.LocationEntity;
 import com.vikram.traffic.data.LocationRepository;
+import com.vikram.traffic.model.Location;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +27,7 @@ public class DatabaseSeeder implements CommandLineRunner {
 
         for (String name : initial) {
             if (!repo.existsByNameIgnoreCase(name)) {
-                repo.save(new LocationEntity(name));
+                repo.save(new Location(name));
             }
         }
     }

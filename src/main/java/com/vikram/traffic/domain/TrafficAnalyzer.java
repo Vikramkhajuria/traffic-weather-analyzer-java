@@ -15,7 +15,7 @@ public class TrafficAnalyzer {
         String condition = Weather1.getCondition();
         int congestion = trafficInfo1.getCongestionLevel();
 
-        if (congestion >= 8 && condition.equals("Snow")) {
+        if (congestion >= 8 && condition.equalsIgnoreCase("Snow")) {
             return RiskLevel.HIGH;
 
         } else if (congestion >= 6) {
@@ -38,10 +38,10 @@ public class TrafficAnalyzer {
             reasons.add("Congestion >=8");
         } else if (congestion >= 6) {
             score += 35;
-            reasons.add("Congestion between 5 and 7");
+            reasons.add("Congestion between 6 and 7");
         } else {
             score += 15;
-            reasons.add("Congestion <5");
+            reasons.add("Congestion <6");
         }
         String c = condition == null ? "" : condition.toLowerCase();
 

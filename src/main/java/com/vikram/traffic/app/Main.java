@@ -83,22 +83,22 @@ public class Main {
                     continue;
                 }
 
-                // Valid selection
+
                 Location selected = locations.get(choice - 1);
 
                 WeatherInfo weather = dataService.getWeatherInfo(selected);
                 TrafficInfo traffic = dataService.getTrafficInfo(selected);
 
-                // Perform Risk Analysis
+
                 RiskLevel risk = analyzer.getRiskLevel(weather, traffic);
 
-                // Output
+
                 System.out.println("\n=== Analysis Result ===");
                 System.out.println("Location  : " + selected.getName());
                 System.out.println("Weather   : " + weather.getTemperature() + "°C, " + weather.getCondition());
                 System.out.println("Traffic   : " + traffic.getCongestionLevel());
                 System.out.println("Risk      : " + risk.getMessage());
-                System.out.println("========================\n");
+                System.out.println("=======================\n");
             }
 
         scanner.close();

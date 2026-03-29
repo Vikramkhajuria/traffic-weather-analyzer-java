@@ -68,11 +68,15 @@ public class FakeDataService implements DataService {
     @Override
     public WeatherInfo getWeatherInfo(Location location){
         String name = location.getName();
-        return weatherMap.get(name);
+        WeatherInfo info = weatherMap.get(name);
+        if (info == null) throw new IllegalArgumentException("No weather data for location: " + name);
+        return info;
     }
     @Override
     public TrafficInfo getTrafficInfo(Location location){
         String name = location.getName();
-        return trafficMap.get(name);
+        TrafficInfo info = trafficMap.get(name);
+        if (info == null) throw new IllegalArgumentException("No traffic data for location: " + name);
+        return info;
     }
 }

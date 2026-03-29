@@ -1,15 +1,13 @@
 package com.vikram.traffic.service;
 
 import com.vikram.traffic.data.DataService;
+import com.vikram.traffic.data.LocationRepository;
 import com.vikram.traffic.domain.TrafficAnalyzer;
 import com.vikram.traffic.model.Location;
 import com.vikram.traffic.model.TrafficInfo;
 import com.vikram.traffic.model.WeatherInfo;
 import com.vikram.traffic.web.LocationNotFoundException;
 import org.springframework.stereotype.Service;
-
-import com.vikram.traffic.data.LocationRepository;
-import com.vikram.traffic.data.LocationEntity;
 
 import java.util.List;
 
@@ -26,17 +24,12 @@ public class RiskService {
         this.locationRepository = locationRepository;
     }
 
-
     public List<Location> getLocations() {
-        return locationRepository.findAll().stream()
-                .map(e -> new Location(e.getName()))
-                .toList();
+        return locationRepository.findAll();
     }
 
     public RiskResult calculateRisk(String locationName) {
-        Location location = dataService.getLocations().stream()
-                .filter(l -> l.getName().equalsIgnoreCase(locationName))
-                .findFirst()
+        Location location = locationRepository.findByNameIgnoreCase(locationName)
                 .orElseThrow(() -> new LocationNotFoundException(locationName));
 
         WeatherInfo weather = dataService.getWeatherInfo(location);
@@ -52,7 +45,6 @@ public class RiskService {
                 evaluation.score(),
                 evaluation.reasons()
         );
-
     }
 }
 

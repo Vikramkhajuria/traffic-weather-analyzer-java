@@ -1,0 +1,159 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+
+' =====================
+' Application / App
+' =====================
+package "com.vikram.traffic.app" {
+  class Main {
+    + main(args : String[])
+  }
+}
+
+package "com.vikram.traffic" {
+  class TrafficWeatherAnalyzerApplication <<SpringBootApplication>> {
+    + main(args : String[])
+  }
+}
+
+' =====================
+' Config
+' =====================
+package "com.vikram.traffic.config" {
+  class AppConfig <<Configuration>>
+  class DataInitializer <<Component>>
+  class DatabaseSeeder <<Component>>
+}
+
+' =====================
+' Data Layer
+' =====================
+package "com.vikram.traffic.data" {
+
+  interface DataService {
+    + getWeather(location : Location) : WeatherInfo
+    + getTraffic(location : Location) : TrafficInfo
+  }
+
+  class FakeDataService <<Service>>
+  class RandomDataService <<Service>>
+
+  class LocationEntity <<Entity>> {
+    - id : Long
+    - name : String
+  }
+
+  interface LocationRepository <<JpaRepository>> {
+  }
+
+  DataService <|.. FakeDataService
+  DataService <|.. RandomDataService
+}
+
+' =====================
+' Domain Layer
+' =====================
+package "com.vikram.traffic.domain" {
+
+  class TrafficAnalyzer {
+    + analyze(weather : WeatherInfo, traffic : TrafficInfo) : RiskLevel
+  }
+
+  class AllLocationAnalyzer {
+    + analyzeAll() : List<RiskResult>
+  }
+
+  class RiskEvaluation {
+    + evaluate(weather : WeatherInfo, traffic : TrafficInfo) : RiskLevel
+  }
+
+  enum RiskLevel {
+    LOW
+    MEDIUM
+    HIGH
+  }
+}
+
+' =====================
+' Model
+' =====================
+package "com.vikram.traffic.model" {
+
+  class Location {
+    - name : String
+  }
+
+  class WeatherInfo {
+    - temperature : int
+    - condition : String
+  }
+
+  class TrafficInfo {
+    - congestionLevel : int
+  }
+}
+
+' =====================
+' Service Layer
+' =====================
+package "com.vikram.traffic.service" {
+
+  class RiskService <<Service>> {
+    + assessRisk(location : Location) : RiskResult
+  }
+
+  class RiskResult <<DTO>> {
+    - location : String
+    - temperature : int
+    - condition : String
+    - congestion : int
+    - riskLevel : String
+  }
+}
+
+' =====================
+' Web Layer
+' =====================
+package "com.vikram.traffic.web" {
+
+  class RiskController <<RestController>>
+  class LocationController <<RestController>>
+
+  class ApiExceptionHandler <<ControllerAdvice>>
+  class ApiError
+
+  class LocationNotFoundException <<Exception>>
+}
+
+' =====================
+' Relationships
+' =====================
+
+Main --> TrafficWeatherAnalyzerApplication
+
+RiskController --> RiskService
+LocationController --> LocationRepository
+
+RiskService --> DataService
+RiskService --> RiskResult
+RiskService --> Location
+RiskService --> TrafficAnalyzer
+
+TrafficAnalyzer --> WeatherInfo
+TrafficAnalyzer --> TrafficInfo
+TrafficAnalyzer --> RiskLevel
+
+AllLocationAnalyzer --> RiskService
+
+FakeDataService --> WeatherInfo
+FakeDataService --> TrafficInfo
+RandomDataService --> WeatherInfo
+RandomDataService --> TrafficInfo
+
+LocationRepository --> LocationEntity
+
+ApiExceptionHandler --> ApiError
+ApiExceptionHandler --> LocationNotFoundException
+
+@enduml
