@@ -52,8 +52,8 @@ All services run inside Docker containers, ensuring consistent behavior across m
 - Risk calculation based on traffic congestion level and weather conditions
 - Scored risk evaluation with detailed reasoning per location
 - REST endpoints:
-  - `GET /api/v1/locations` — list all locations
-  - `GET /api/v1/risk/{location}` — get risk analysis for a location
+  - `GET /api/v1/locations`  list all locations
+  - `GET /api/v1/risk/{location}`  get risk analysis for a location
 - Structured error responses with HTTP status codes
 - API documentation via OpenAPI / Swagger UI (`/swagger-ui.html`)
 - Application runs fully containerized (API + DB)
