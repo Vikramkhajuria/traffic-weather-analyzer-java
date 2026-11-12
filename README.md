@@ -17,18 +17,6 @@ The goal was to move beyond "works on my machine" and build something that resem
 
 ## Architecture Overview
 
-```
-Client (Browser / API tool)
-        ↓
-Spring Boot REST API
-        ↓
-Service Layer (Risk Evaluation)
-        ↓
-JPA / Hibernate
-        ↓
-PostgreSQL Database
-```
-
 ![Architecture diagram (generated from the repo with Archify)](docs/architecture.png)
 
 All services run inside Docker containers, ensuring consistent behavior across machines.
