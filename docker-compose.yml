@@ -2,14 +2,16 @@ services:
   db:
       image: postgres:16
       container_name: twa-postgres
-      env_file:
-        - .env
+      environment:
+        POSTGRES_DB: ${POSTGRES_DB:-twa}
+        POSTGRES_USER: ${POSTGRES_USER:-twa}
+        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-twa}
       ports:
         - "5432:5432"
       volumes:
         - twa_pgdata:/var/lib/postgresql/data
       healthcheck:
-        test: ["CMD-SHELL", "pg_isready -U twa -d twa"]
+        test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
         interval: 5s
         timeout: 3s
         retries: 10
@@ -21,9 +23,9 @@ services:
       db:
         condition: service_healthy
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/twa
-      SPRING_DATASOURCE_USERNAME: twa
-      SPRING_DATASOURCE_PASSWORD: twa
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${POSTGRES_DB:-twa}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-twa}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-twa}
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
     ports:
       - "8080:8080"
