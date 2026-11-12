@@ -1,30 +1,13 @@
 package com.vikram.traffic.domain;
 
-import com.vikram.traffic.data.DataService;
 import com.vikram.traffic.model.TrafficInfo;
 import com.vikram.traffic.model.WeatherInfo;
-import com.vikram.traffic.domain.RiskLevel;
 
 import java.util.List;
 import java.util.ArrayList;
 
 
 public class TrafficAnalyzer {
-
-    public  RiskLevel getRiskLevel(WeatherInfo Weather1, TrafficInfo trafficInfo1) {
-        String condition = Weather1.getCondition();
-        int congestion = trafficInfo1.getCongestionLevel();
-
-        if (congestion >= 8 && condition.equalsIgnoreCase("Snow")) {
-            return RiskLevel.HIGH;
-
-        } else if (congestion >= 6) {
-            return RiskLevel.MEDIUM;
-
-        } else {
-            return RiskLevel.LOW;
-        }
-    }
 
     public RiskEvaluation evaluate(WeatherInfo weather,TrafficInfo traffic) {
         int score = 0;
