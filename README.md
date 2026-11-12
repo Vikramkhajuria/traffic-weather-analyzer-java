@@ -29,6 +29,8 @@ JPA / Hibernate
 PostgreSQL Database
 ```
 
+![Architecture diagram (generated from the repo with Archify)](docs/architecture.png)
+
 All services run inside Docker containers, ensuring consistent behavior across machines.
 
 ## Tech Stack
