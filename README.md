@@ -116,15 +116,9 @@ The API will be available at `http://localhost:8080`.
 
 ## Database credentials
 
-The default credentials (`username: twa`, `password: twa`) are for local development only.
-For any real deployment, override them via environment variables:
-
-```
-SPRING_DATASOURCE_USERNAME=...
-SPRING_DATASOURCE_PASSWORD=...
-```
-
-The `docker-compose.yml` already passes these through from the environment to the containers.
+The defaults (`twa` / `twa`) are for local development only. Override them by setting
+`POSTGRES_USER`, `POSTGRES_PASSWORD`, and `POSTGRES_DB` in the environment or in a `.env`
+file next to `docker-compose.yml`.
 
 ## Tests
 
